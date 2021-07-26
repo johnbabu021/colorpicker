@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./style.css">
+    <title>Ajax Tutorial</title>
+</head>
+<body>
+    <h1>color picker</h1>
+    <input id="r" placeholder="red">
+
+    <input id="g"placeholder="green">
+
+    <input id="b"placeholder="blue">
+    <button onclick=showFunction()>show color</button>
+
+</body>
+
+<script>
+function showFunction(){
+    const red=document.getElementById('r')
+    const green=document.getElementById('g');
+    const blue=document.getElementById('b');
+    const r=red.value
+    const g=green.value
+    const b=blue.value
+
+    const xhttp=new XMLHttpRequest()
+
+    xhttp.onload=function(){
+        if(xhttp.status==200){
+            red.value=null
+    green.value=null
+blue.value=null
+            const x=JSON.parse(this.response)
+            const hex=x.hex.value
+            const hsl=x.hsl.value
+            const hsv=x.hsv.value
+            const colorAttr=document.createElement('div')
+            colorAttr.style.width="50vw"
+            colorAttr.innerHTML=hsv+" "+hsl+" "+hex
+                colorAttr.style.backgroundColor=`${hex}`
+                if(r<100&&b<100&&g<100){
+
+            colorAttr.style.color="white"
+                }
+                if(r>100&&g>100&&b>100){
+                    colorAttr.style.color="black"
+   
+                }
+colorAttr.style.marginTop="2vw"
+            
+            
+            document.body.append(colorAttr)
+
+        }
+    }
+    xhttp.open("GET","https://www.thecolorapi.com/id?rgb=rgb("+r+","+g+","+b+")",true)
+
+    xhttp.send()
+
+}
+
+
+</script>
+
+</html>
